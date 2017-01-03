@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Android框架之图片框架Glide</title>
+</head>
+<body>
+<div id="wmd-preview" class="wmd-preview"><div class="md-section-divider"></div><div class="md-section-divider"></div><h1 data-anchor-id="0b17" id="android框架之图片框架glide">Android框架之图片框架Glide</h1><hr><p data-anchor-id="89u2">一．Glide的简单介绍</p><pre data-anchor-id="mica"><code>  Glide是网络框架中加载图片最简单使用的一种工具。
+</code></pre><div class="md-section-divider"></div><pre class="prettyprint linenums prettyprinted" data-anchor-id="d0qu"><ol class="linenums"><li class="L0"><code><span class="pln"> </span><span class="pun">依赖：</span><span class="pln"> compile </span><span class="str">'com.github.bumptech.glide:glide:3.7.0'</span></code></li><li class="L1"><code><span class="typ">GitHub</span><span class="pun">中的源码地址：</span><span class="pln">https</span><span class="pun">:</span><span class="com">//github.com/bumptech/glide</span></code></li></ol></pre><pre data-anchor-id="os4e"><code>  我们需要了解它的源码地址，作用，类和使用方法， 依赖的版本是会更新的。 
+  比如下载一张网络的图片到ImagView中，使用一句话就可以了：
+</code></pre><div class="md-section-divider"></div><pre class="prettyprint linenums prettyprinted" data-anchor-id="covz"><ol class="linenums"><li class="L0"><code><span class="typ">Glide</span><span class="pun">.</span><span class="kwd">with</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">).</span><span class="pln">load</span><span class="pun">(</span><span class="str">"http://p0.so.qhmsg.com/t015a2d97fc46c534d0.jpg"</span><span class="pun">)</span></code></li><li class="L1"><code><span class="pun">.</span><span class="kwd">into</span><span class="pun">(</span><span class="pln">imageView</span><span class="pun">).</span><span class="pln">onLoadStarted</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ColorDrawable</span><span class="pun">(</span><span class="lit">0xf00</span><span class="pun">));</span></code></li></ol></pre><pre data-anchor-id="o8xw"><code>  图片加载库的优势就在于此。简简单单一句话，下载，缓存，加载统统搞定。简直就是美好一生的东西。而Glide就是这样使人美好一生的东西之一。
+
+  下表是.load()可以传入的参数及说明
+</code></pre><table data-anchor-id="til5" class="table table-striped-white table-bordered">
+<thead>
+<tr>
+ <th>参数</th>
+ <th style="text-align:right;">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+ <td>.load(String string)</td>
+ <td style="text-align:right;">string可以为一个文件路径、uri或者url</td>
+</tr>
+<tr>
+ <td>.load(Uri uri)</td>
+ <td style="text-align:right;">uri类型</td>
+</tr>
+<tr>
+ <td>.load(File file)</td>
+ <td style="text-align:right;">文件</td>
+</tr>
+<tr>
+ <td>.load(Integer resourceId)</td>
+ <td style="text-align:right;">资源Id,R.drawable.xxx或者R.mipmap.xxx</td>
+</tr>
+<tr>
+ <td>.load(byte[] model)</td>
+ <td style="text-align:right;">byte[]类型</td>
+</tr>
+<tr>
+ <td>.load(T model)</td>
+ <td style="text-align:right;">自定义类型</td>
+</tr>
+</tbody></table><p data-anchor-id="3d70">.onLoadStarted（） 表示的是图片没加载完成前显示的图像。可以是资源文件，可以是一个颜色的背景。</p><p data-anchor-id="cfo7">设计代码：</p><div class="md-section-divider"></div><pre class="prettyprint linenums prettyprinted" data-anchor-id="xn2t"><ol class="linenums"><li class="L0"><code><span class="kwd">package</span><span class="pln"> com</span><span class="pun">.</span><span class="pln">lwz</span><span class="pun">.</span><span class="pln">glide</span><span class="pun">;</span></code></li><li class="L1"><code><span class="kwd">import</span><span class="pln"> android</span><span class="pun">.</span><span class="pln">graphics</span><span class="pun">.</span><span class="pln">drawable</span><span class="pun">.</span><span class="typ">ColorDrawable</span><span class="pun">;</span></code></li><li class="L2"><code><span class="kwd">import</span><span class="pln"> android</span><span class="pun">.</span><span class="pln">os</span><span class="pun">.</span><span class="typ">Bundle</span><span class="pun">;</span></code></li><li class="L3"><code><span class="kwd">import</span><span class="pln"> android</span><span class="pun">.</span><span class="pln">support</span><span class="pun">.</span><span class="pln">v7</span><span class="pun">.</span><span class="pln">app</span><span class="pun">.</span><span class="typ">AppCompatActivity</span><span class="pun">;</span></code></li><li class="L4"><code><span class="kwd">import</span><span class="pln"> android</span><span class="pun">.</span><span class="pln">widget</span><span class="pun">.</span><span class="typ">ImageView</span><span class="pun">;</span></code></li><li class="L5"><code></code></li><li class="L6"><code><span class="kwd">import</span><span class="pln"> com</span><span class="pun">.</span><span class="pln">bumptech</span><span class="pun">.</span><span class="pln">glide</span><span class="pun">.</span><span class="typ">Glide</span><span class="pun">;</span></code></li><li class="L7"><code></code></li><li class="L8"><code><span class="kwd">public</span><span class="pln"> </span><span class="kwd">class</span><span class="pln"> </span><span class="typ">MainActivity</span><span class="pln"> </span><span class="kwd">extends</span><span class="pln"> </span><span class="typ">AppCompatActivity</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L9"><code></code></li><li class="L0"><code><span class="pln">    </span><span class="lit">@Override</span></code></li><li class="L1"><code><span class="pln">    </span><span class="kwd">protected</span><span class="pln"> </span><span class="kwd">void</span><span class="pln"> onCreate</span><span class="pun">(</span><span class="typ">Bundle</span><span class="pln"> savedInstanceState</span><span class="pun">)</span><span class="pln"> </span><span class="pun">{</span></code></li><li class="L2"><code><span class="pln">        </span><span class="kwd">super</span><span class="pun">.</span><span class="pln">onCreate</span><span class="pun">(</span><span class="pln">savedInstanceState</span><span class="pun">);</span></code></li><li class="L3"><code><span class="pln">        </span><span class="typ">ImageView</span><span class="pln"> imageView</span><span class="pun">=</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ImageView</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">);</span></code></li><li class="L4"><code><span class="pln">        setContentView</span><span class="pun">(</span><span class="pln">imageView</span><span class="pun">);</span></code></li><li class="L5"><code><span class="pln">        </span><span class="com">//使用glide非常简单，一句话就可以了 </span></code></li><li class="L6"><code><span class="pln">         </span><span class="typ">Glide</span><span class="pun">.</span><span class="kwd">with</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">).</span><span class="pln">load</span><span class="pun">(</span><span class="str">"http://p0.so.qhmsg.com/t015a2d97fc46c534d0.jpg"</span><span class="pun">)</span></code></li><li class="L7"><code><span class="pln">         </span><span class="pun">.</span><span class="kwd">into</span><span class="pun">(</span><span class="pln">imageView</span><span class="pun">).</span><span class="pln">onLoadStarted</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">ColorDrawable</span><span class="pun">(</span><span class="lit">0xf00</span><span class="pun">));</span></code></li><li class="L8"><code></code></li><li class="L9"><code><span class="pln">    </span><span class="pun">}</span></code></li><li class="L0"><code><span class="pun">}</span></code></li></ol></pre><pre data-anchor-id="p11g"><code>  当然Glide也可以用来加载本地的图片资源，但是主要需求还是用来请求网络的图片资源。
+
+  正常情况下请求网络数据还要使用异步任务或子线程来，而这里使用Glide就可以很方便的请求到图片的资源数据，并绑定到某个控件上。
+
+  这里有Glide的另一个工具包glide-transformations，也是非常受欢迎的，并且可以支持圆角显示最终返回的图片！
+</code></pre><p data-anchor-id="amox">依赖：</p><div class="md-section-divider"></div><pre class="prettyprint linenums prettyprinted" data-anchor-id="sewb"><ol class="linenums"><li class="L0"><code><span class="pln">compile </span><span class="pun">‘</span><span class="pln">jp</span><span class="pun">.</span><span class="pln">wasabeef</span><span class="pun">:</span><span class="pln">glide</span><span class="pun">-</span><span class="pln">transformations</span><span class="pun">:</span><span class="lit">2.0</span><span class="pun">.</span><span class="lit">1</span><span class="pun">’</span><span class="pln"> </span></code></li></ol></pre><p data-anchor-id="004u">这是Github中的地址：<a href="https://github.com/wasabeef/glide-transformations" target="_blank">https://github.com/wasabeef/glide-transformations</a></p><p data-anchor-id="ijfs">加载显得成普通图片的语句：和上面的语句一模一样！ </p><pre data-anchor-id="joib"><code>加载显示成圆角图片的语句： 
+</code></pre><div class="md-section-divider"></div><pre class="prettyprint linenums prettyprinted" data-anchor-id="dtnf"><ol class="linenums"><li class="L0"><code><span class="typ">Glide</span><span class="pun">.</span><span class="kwd">with</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">).</span><span class="pln">load</span><span class="pun">(</span><span class="pln">path</span><span class="pun">).</span><span class="pln">bitmapTransform</span><span class="pun">(</span><span class="kwd">new</span><span class="pln"> </span><span class="typ">CropCircleTransformation</span><span class="pun">(</span><span class="kwd">this</span><span class="pun">)).</span><span class="kwd">into</span><span class="pun">(</span><span class="pln">imageView</span><span class="pun">);</span></code></li></ol></pre></div>
+</body>
+</html>
